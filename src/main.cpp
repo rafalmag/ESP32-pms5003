@@ -77,10 +77,10 @@ void setup()
 
 void loop()
 {
-    Serial.println("Wake up, wait 20 seconds for stable readings...");
+    Serial.println("Wake up, wait 30 seconds for stable readings...");
     digitalWrite(setPin, HIGH);
     pms.wakeUp();
-    delay(20000);
+    delay(30000);
 
     HTTPClient https;
     https.begin(host, 443, uri, rootCa); //HTTPS
@@ -100,8 +100,6 @@ void loop()
         Serial.println();
 
         String req = String("{\"value1\":") + data.PM_AE_UG_1_0 + ",\"value2\":" + data.PM_AE_UG_2_5 + ",\"value3\":" + data.PM_AE_UG_10_0 + "}";
-        Serial.println(req);
-
         int httpCode = https.POST(req);
 
         // httpCode will be negative on error
@@ -109,11 +107,6 @@ void loop()
         {
             // HTTP header has been send and Server response header has been handled
             Serial.printf("[HTTPS] POST... code: %d\n", httpCode);
-            if (httpCode == HTTP_CODE_OK)
-            {
-                String payload = https.getString();
-                Serial.println(payload);
-            }
         }
         else
         {
@@ -125,8 +118,8 @@ void loop()
         Serial.println("No data.");
     }
     https.end();
-    Serial.println("Going to sleep for 10 seconds.");
+    Serial.println("Going to sleep for 30 seconds.");
     pms.sleep();
     digitalWrite(setPin, LOW);
-    delay(10000);
+    delay(30000);
 }
